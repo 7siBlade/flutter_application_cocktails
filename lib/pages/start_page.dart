@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_cocktails/pages/cocktails/cocktails_page.dart';
+import 'package:flutter_application_cocktails/pages/cocktails/cocktails_list.dart';
 import 'package:flutter_application_cocktails/pages/favorites/favorites_page.dart';
 import 'package:flutter_application_cocktails/pages/random_cocktail/random_cocktail_page.dart';
 
@@ -14,18 +14,16 @@ class _StartPageState extends State<StartPage> {
   int index = 0;
 
   List<Widget> widgetList = const [
-    // Text("data1"),
-    // Text("data2"),
-    // Text("data3"),
     CocktailsPage(),
-    FavoritesPage(),
     RandomCocktailPage(),
+    FavoritesPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         child: widgetList[index],
       ),
@@ -46,7 +44,7 @@ class _StartPageState extends State<StartPage> {
             label: "Random cocktail",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.heart_broken),
+            icon: Icon(Icons.favorite),
             label: "Favorites",
           ),
         ],
