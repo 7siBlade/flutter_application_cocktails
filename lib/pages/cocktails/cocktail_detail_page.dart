@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-class CocktailDetailPage extends StatelessWidget {
+import '../favorites/favorites_manager.dart';
+
+class CocktailDetailPage extends StatefulWidget {
   final String cocktailName;
   final String cocktailImageURL;
   final String cocktailInstructions;
@@ -35,43 +37,6 @@ class CocktailDetailPage extends StatelessWidget {
   final String Measure14;
   final String Measure15;
   final bool showAppBar;
-
-
-  List<String> get ingredients => [
-        cocktailIng1,
-        cocktailIng2,
-        cocktailIng3,
-        cocktailIng4,
-        cocktailIng5,
-        cocktailIng6,
-        cocktailIng7,
-        cocktailIng8,
-        cocktailIng9,
-        cocktailIng10,
-        cocktailIng11,
-        cocktailIng12,
-        cocktailIng13,
-        cocktailIng14,
-        cocktailIng15,
-      ];
-
-  List<String> get measures => [
-        Measure1,
-        Measure2,
-        Measure3,
-        Measure4,
-        Measure5,
-        Measure6,
-        Measure7,
-        Measure8,
-        Measure9,
-        Measure10,
-        Measure11,
-        Measure12,
-        Measure13,
-        Measure14,
-        Measure15,
-      ];
 
   const CocktailDetailPage({
     Key? key,
@@ -112,11 +77,73 @@ class CocktailDetailPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CocktailDetailPage> createState() => _CocktailDetailPageState();
+}
+
+class _CocktailDetailPageState extends State<CocktailDetailPage> {
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = FavoritesManager.isFavorite(widget.cocktailName);
+  }
+
+  void _toggleFavorite() {
+    setState(() {
+      if (_isFavorite) {
+        FavoritesManager.removeFromFavorites(widget.cocktailName);
+      } else {
+        FavoritesManager.addToFavorites(widget.cocktailName);
+      }
+      _isFavorite = !_isFavorite;
+    });
+  }
+
+  List<String> get ingredients => [
+        widget.cocktailIng1,
+        widget.cocktailIng2,
+        widget.cocktailIng3,
+        widget.cocktailIng4,
+        widget.cocktailIng5,
+        widget.cocktailIng6,
+        widget.cocktailIng7,
+        widget.cocktailIng8,
+        widget.cocktailIng9,
+        widget.cocktailIng10,
+        widget.cocktailIng11,
+        widget.cocktailIng12,
+        widget.cocktailIng13,
+        widget.cocktailIng14,
+        widget.cocktailIng15,
+      ];
+
+  List<String> get measures => [
+        widget.Measure1,
+        widget.Measure2,
+        widget.Measure3,
+        widget.Measure4,
+        widget.Measure5,
+        widget.Measure6,
+        widget.Measure7,
+        widget.Measure8,
+        widget.Measure9,
+        widget.Measure10,
+        widget.Measure11,
+        widget.Measure12,
+        widget.Measure13,
+        widget.Measure14,
+        widget.Measure15,
+      ];
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: showAppBar ? AppBar(
-        title: Text(cocktailName),
-      ) : null,
+      appBar: widget.showAppBar
+          ? AppBar(
+              title: Text(widget.cocktailName),
+            )
+          : null,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -124,36 +151,49 @@ class CocktailDetailPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Image.network(
-                cocktailImageURL,
+                widget.cocktailImageURL,
                 fit: BoxFit.cover,
               ),
               const SizedBox(height: 16),
               Text(
-                cocktailName,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                widget.cocktailName,
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               const Text(
                 'Instructions: ',
-                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              Text(cocktailInstructions),
+              Text(widget.cocktailInstructions),
               const SizedBox(height: 16),
               const Text(
-                    'Ingredients:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ...ingredients.where((ing) => ing != 'null' && ing !='').map((ing) => Text(ing)).toList(),
-                const SizedBox(height: 16,),
-                if (measures.any((mes) => mes.isNotEmpty))
-                  const Text(
-                    'Measures:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ...measures.where((mes) => mes != 'null'&& mes !='').map((mes) => Text(mes)).toList(),
+                'Ingredients:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              ...ingredients
+                  .where((ing) => ing != 'null' && ing != '')
+                  .map((ing) => Text(ing))
+                  .toList(),
+              const SizedBox(
+                height: 16,
+              ),
+              if (measures.any((mes) => mes.isNotEmpty))
+                const Text(
+                  'Measures:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ...measures
+                  .where((mes) => mes != 'null' && mes != '')
+                  .map((mes) => Text(mes))
+                  .toList(),
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _toggleFavorite,
+        child: Icon(_isFavorite ? Icons.favorite : Icons.favorite_border),
       ),
     );
   }
