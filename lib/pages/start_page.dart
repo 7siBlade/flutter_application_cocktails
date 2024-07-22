@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_cocktails/pages/cocktails/cocktails_list.dart';
 import 'package:flutter_application_cocktails/pages/favorites/favorites_page.dart';
@@ -23,7 +24,17 @@ class _StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.of(context).pushReplacementNamed('/');
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: widgetList[index],
       ),

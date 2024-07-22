@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "941795587083",
+    "project_id": "cocktails-4159e",
+    "storage_bucket": "cocktails-4159e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:941795587083:android:9800bdff8dc3c5941c030e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_cocktails"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4_Vz9GQDgCaWHFEa5vTJYbiIu1KeELHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
